@@ -6,4 +6,5 @@ export const errorMiddleware = (err,req,res,next)=>{
         message: 'something went wrong',
         err,
     });
+    
 };

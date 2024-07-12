@@ -5,10 +5,13 @@ import colors from 'colors';
 import cors from 'cors';
 import morgan from 'morgan';
 import connectDB from './config/db.js';
+import 'express-async-errors';
+
 //import userRoutes
 import testRoutes from "./routes/testRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import { errorMiddleware } from './middlewares/errorMiddleware.js';
+
 //connwct MongoDB connection
 connectDB();
 
