@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 
+//import encryption
+import bcrypt from 'bcryptjs';
+
 //schema
 const userSchema = new mongoose.Schema({
     name:{
@@ -26,5 +29,10 @@ const userSchema = new mongoose.Schema({
         default:"India"
     }
 },{timestamps:true})
+
+userSchema.pre('save', async function(){
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt);
+})
 
 export default mongoose.model('Users', userSchema)
