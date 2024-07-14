@@ -3,7 +3,7 @@ export const errorMiddleware = (err,req,res,next)=>{
     console.log(err);
     const defaultErrors = {
         statusCode : 500,
-        message : 'something went wrong',
+        message : err,
     }
     // res.status(500).send({
     //     success:false,

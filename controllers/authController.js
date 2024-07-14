@@ -2,7 +2,7 @@ import userModel from "../models/userModel.js";
 
 export const registerController = async (req, res, next) => {
     const { name, email, password } = req.body
-    // // validate
+    // validate
     // if(!name){
     //     next("name is required")
     // }
@@ -24,13 +24,53 @@ export const registerController = async (req, res, next) => {
     res.status(201).send({
         success: true,
         message: 'User registerd successfully',
-        user:{
-            name : user.name,
-            lastName : user.lastName,
-            email : user.email,
-            location : user.location
+        user: {
+            name: user.name,
+            lastName: user.lastName,
+            email: user.email,
+            location: user.location,
         },
         token,
     })
-
 };
+
+export const loginController = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        // Validation
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: 'Please provide all fields' });
+        }
+
+        // Find user by email
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Invalid username or password' });
+        }
+
+        // Compare passwords
+        const isMatch = await user.comparePasswords(password);
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: 'Invalid username or password' });
+        }
+
+        // Create token
+        const token = user.createJWT();
+        res.status(200).json({
+            success: true,
+            message: 'Login successfully',
+            user: {
+                name: user.name,
+                lastName: user.lastName,
+                email: user.email,
+                location: user.location,
+            },
+            token,
+        });
+    } catch (error) {
+        // Pass errors to error-handling middleware
+        next(error);
+    }
+};
+
