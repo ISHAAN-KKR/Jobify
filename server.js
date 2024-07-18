@@ -12,6 +12,7 @@ import testRoutes from "./routes/testRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import { errorMiddleware } from './middlewares/errorMiddleware.js';
 import userRoutes from './routes/userRoutes.js';
+import jobsRoute from './routes/jobsRoutes.js'
 
 //connwct MongoDB connection
 connectDB();
@@ -33,7 +34,7 @@ app.use(morgan('dev'));
 app.use('/api/v1/test', testRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', userRoutes);
-
+app.use('/api/v1/job', jobsRoute);
 //validation middleware
 app.use(errorMiddleware)
 
